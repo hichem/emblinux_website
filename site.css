@@ -1,0 +1,97 @@
+body
+{
+	width:99%;
+	background-color:#FFFFFF	
+}
+
+#entete
+{
+	width: 99%;
+	height:200px;
+	background-color:#AAAAFF;
+	border:thick double  #ffffff;
+}
+.logo
+{
+	float:left;
+}
+.site_name
+{
+	float:right;
+	font-family:sans-serif;
+	font-style:oblique;
+	font-variant:small-caps;
+	margin-right:7em;
+	margin-top:2.5em;	
+}
+
+#left
+{
+	position:relative;
+	width:20%;
+	height:100%;	
+	float: left;
+	background-color:#FFFFFF;
+	border:thick double  #ffffff;	
+}
+.menu
+{
+	font-size:small;
+	height:100%;
+	width:180px;
+	float: left;
+	background-color:#AAAAFF;
+	border:thick double  #ffffff;	
+	padding:1em;
+	
+}
+.login
+{
+	font-size:small;
+	height:100%;
+	width:180px;
+	float: left;
+	background-color:#AAAAFF;
+	border:thick double  #ffffff;
+	padding:1em;
+}
+.workbench
+{
+	font-size:small;
+	height:100%;
+	width:180px;
+	float: left;
+	background-color:#AAAAFF;
+	border:thick double  #ffffff;
+	padding:1em;
+}
+.control_panel
+{
+	font-size:small;
+	height:100%;
+	width:180px;
+	float: left;
+	background-color:#AAAAFF;
+	border:thick double  #ffffff;
+	padding:1em;
+}
+.utils
+{
+	font-size:small;
+	height:100%;
+	width:180px;
+	float: left;
+	background-color:#AAAAFF;
+	border:thick double  #ffffff;
+	padding:1em;
+}
+#corps
+{
+	position:absolute;
+	padding-left:5%;
+	left:25%;
+}
+.paragraph
+{
+	width:80%;
+}
