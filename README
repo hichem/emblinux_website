@@ -1,0 +1,9 @@
+This site gives a simple web interface to configure the generation of crosstool-ng
+(http://ymorin.is-a-geek.org/dokuwiki/projects/crosstool) toolchains and the build
+of a minimal linux system using miniroot (http://github.com/tmonjalo/miniroot/tree
+/master).
+A tiny mysql database must be created in order for the site to be functional. The
+mysql code to generate the database is given in DB.sql.
+The php scripts work in conjunction with perl scripts that control the flow of the
+toolchains' build and the construction of the linux system. These can be found at
+http://github.com/hichem/automated_build_system/tree/master.
