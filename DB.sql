@@ -8,7 +8,7 @@ create table users(id int (16) auto_increment, nom varchar(20) not null, prenom 
 
 create table project(id int (16) auto_increment, usr_id int (16) not null, title varchar(30) not null, description varchar(200) not null, architecture varchar(20) not null, variant varchar(20), creation_date date, primary key (id), foreign key (usr_id) references users(id));
 
-create table configuration(c_id int (16) auto_increment, proj_id int (16) not null, name varchar(30) not null, toolchain varchar(50) not null, kernel_config varchar(50) not null, rt_extension varchar(20) not null, status varchar(30) not null, pid int(16), primary key(c_id),foreign key(proj_id) references project(id));
+create table configuration(c_id int (16) auto_increment, proj_id int (16) not null, name varchar(30) not null, toolchain varchar(50) not null, kernel_config varchar(50) not null, rt_extension varchar(20) not null, status varchar(30) not null, pid int(16), kernel_version varchar(20) not null, primary key(c_id),foreign key(proj_id) references project(id));
 
 create table toolchain (id int(16) auto_increment, usr_id int(16) not null, name varchar(50) not null, status varchar(30) not null, creation_date date, build_date date, pid int(16), primary key(id), foreign key(usr_id) references users(id));
 
