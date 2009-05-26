@@ -71,6 +71,7 @@
 			<TD><INPUT type="checkbox" name="check_all" onchange="Invert();"></TD>
 			<TD>Titre</TD>
 			<TD>Architecture</TD>
+			<TD>Variante</TD>
 			<TD>Description</TD>
 			<TD>Date de création</TD>
 		</TR>
@@ -78,12 +79,15 @@
 			$j=0;
 			while($record = mysql_fetch_array($response))
 			{
+				$variant = $record['variant'];
+				if($variant == '')
+					$variant = '-';
 				$j++;
 				echo '<TR>';
 				echo "<TD align=\"center\"><INPUT type=\"checkbox\" name=\"chk_".$j."\" value=\"".$record['title']."\" ></TD>";
 					echo "<TD><A href=\"index.php?page=config_project&project=".$record['id']."\">".$record['title']."</A></TD>";
 				echo "<TD>".$record['architecture']."</TD>";
-				echo "<TD>".$record['variant']."</TD>";
+				echo "<TD>".$variant."</TD>";
 				echo "<TD>".$record['description']."</TD>";
 				echo "<TD>".$record['creation_date']."</TD>";
 				echo '</TR>';

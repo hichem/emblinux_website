@@ -7,6 +7,7 @@
 	  <TITLE>Embedded Linux Virtual Laboratory</TITLE>
 	  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	  <link rel="stylesheet" media="screen" type="text/css" title="Exemple" href="site.css" />
+	  <link rel="stylesheet" media="screen" type="text/css" title="Exemple" href="css.css" />
   </head>
   <body>
 	<DIV id="entete">		
@@ -130,7 +131,7 @@
 	</DIV>
     <DIV id="corps">
 	<?php
-	     	$authorized_pages = Array('addconfig' => 'addconfig.php', 'config_project' => 'config_project.php', 'login' => 'login.php', 'logout' => 'logout.php', 'myprojects' => 'myprojects.php', 'mytoolchains' => 'mytoolchains.php', 'read_config' => 'read_config.php', 'register' => 'register.php', 'reset_password' => 'reset_password.php', 'start_project' => 'start_project.php', 'toolchain' => 'toolchain.php', 'view_toolchain' => 'view_toolchain.php', 'build_toolchain' => 'build_toolchain.php', 'jobs' => 'jobs.php', 'view_config' => 'view_config.php');
+	     	$authorized_pages = Array('addconfig' => 'addconfig.php', 'build_toolchain' => 'build_toolchain.php', 'config_project' => 'config_project.php', 'login' => 'login.php', 'logout' => 'logout.php', 'myprojects' => 'myprojects.php', 'mytoolchains' => 'mytoolchains.php', 'read_config' => 'read_config.php', 'register' => 'register.php', 'reset_password' => 'reset_password.php', 'start_project' => 'start_project.php', 'toolchain' => 'toolchain.php', 'view_toolchain' => 'view_toolchain.php', 'write_toolchain_config' => 'write_toolchain_config.php', 'jobs' => 'jobs.php', 'view_config' => 'view_config.php', 'view_results' => 'view_results.php', 'lmbench' => 'lmbench.php', 'interbench' => 'interbench.php', 'ltprealt' => 'ltprealt.php');
 		$page = $_GET['page'];
 		if($page != '')
 		{

@@ -11,7 +11,7 @@
 	}	
 	
 	//fill the configurations' table
-	$project = htmlspecialchars($_GET['project']);
+	$project = $_GET['project'];
 	
 	//Security check to see whether the user has the permission to access the page
 	$response=mysql_query("select * from project where user_id='".$usr_id."' and id='".$project."'") or die(mysql_error());
@@ -79,7 +79,8 @@
 <H2>Configurations du projet</H2><BR /><BR />
 <FORM name="form1" method="POST" action="<?php echo $PHP_SELF; ?>">
 	<INPUT type="button" value="Créer une configuration" onclick="<?php echo "window.location='index.php?page=addconfig&project=$project'";?>">
-	<INPUT type="submit" value="Supprimer la sélection" name="btn_delete"><BR />
+	<INPUT type="submit" value="Supprimer la sélection" name="btn_delete">
+		<INPUT type="button" value="Voir les résultats" name="btn_results" onclick="<?php echo "window.location='index.php?page=view_results&project=$project_name'";?>"><BR />
 	<HR align="left" width="100%">
 	<?php
 	if($record_count == 0)
@@ -94,6 +95,7 @@
 			<TD><INPUT type="checkbox" name="check_all" onchange="Invert();"></TD>
 			<TD>Nom</TD>
 			<TD>chaine de compilation</TD>
+			<TD>Version du noyau</TD>
 			<TD>Configuration du noyau</TD>
 			<TD>Extension temps réel</TD>
 			<TD>Statut</TD>
@@ -102,11 +104,21 @@
 			$j=0;
 			while($record = mysql_fetch_array($response))
 			{
+				$config = $record['name'];
 				$j++;
-				echo '<TR>';					
-				echo "<TD align=\"center\"><INPUT type=\"checkbox\" name=\"chk_".$j."\" value=\"".$record['name']."\" ></TD>";
-				echo "<TD><A href=\"index.php?page=view_config&project=$project_name&config=".$record['name']."\">".$record['name']."</A></TD>";				
+				echo '<TR>';
+				if($config != 'vanilla')
+				{
+					echo "<TD align=\"center\"><INPUT type=\"checkbox\" name=\"chk_".$j."\" value=\"".$record['name']."\" ></TD>";
+				}
+				else
+				{
+					echo "<TD></TD>";
+					$j--;
+				}
+				echo "<TD><A href=\"index.php?page=view_config&project=$project_name&config=".$record['name']."\">".$record['name']."</A></TD>";
 				echo "<TD><A href=\"index.php?page=view_toolchain&toolchain=".$record['toolchain']."\" >".$record['toolchain']."</A></TD>";
+				echo "<TD>".$record['kernel_version']."</TD>";
 				echo "<TD>".$record['kernel_config']."</TD>";
 				echo "<TD>".$record['rt_extension']."</TD>";
 				echo "<TD>".$record['status']."</TD>";

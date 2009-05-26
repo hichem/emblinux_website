@@ -142,7 +142,7 @@
 		$os = 'elf';
 	}
 	
-	if((preg_match('/arm.*/',$arch)&&($abi == 'eabi'))
+	if(preg_match('/arm.*/',$arch) && ($abi == 'eabi'))
 	{
 		if($libc == 'uClibc')
 		{
@@ -169,6 +169,24 @@
 	{
 		$filename = $config_dir.$arch.'-'.$manufacturer.'-'.$kernel.'-'.$os.'.xml';
 		$toolchain_name = $arch.'-'.$manufacturer.'-'.$kernel.'-'.$os;
+	}
+	
+	// Check whether a toolchain with the same name exists
+	if($handle = opendir("$work_dir/config-toolchains"))
+	{
+		while(($file = readdir($handle)) != false)
+		{
+			if($file == "$toolchain_name.xml")
+			{
+				echo 'Cette chaine de compilation existe déjà. Vous pouvez directement l\'utiliser';
+				return;
+			}
+		}
+		closedir($handle);
+	}
+	else
+	{
+		echo 'Can not access the configurations\' directory';
 	}
 	
      	if (!$handle = fopen($filename, 'w'))
@@ -200,7 +218,7 @@
 		exit;
 	}
 
-	// close file    
+	// close file
 	fclose($handle);
 	
 	// Envoi de la commande de génération de la chaine

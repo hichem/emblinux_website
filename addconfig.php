@@ -11,7 +11,7 @@
 		return;
 	}
 	
-	$project = htmlspecialchars($_GET['project']);
+	$project = $_GET['project'];
 
 	//Security check to see whether the user has the permission to access the page
 	$response=mysql_query("select * from project where user_id='".$usr_id."' and id='".$project."'") or die(mysql_error());
@@ -41,22 +41,49 @@
 		$kernel_config = htmlspecialchars($_POST['cmb_kernel_config']);
 		$rtsolution = htmlspecialchars($_POST['cmb_rtsolution']);
 		$rtpatch = htmlspecialchars($_POST['cmb_rtpatch']);
-		$user_name = htmlspecialchars($_SESSION['login']);
+		$user_name = $_SESSION['login'];
 		
-		mysql_query("insert into configuration values ('','".$project."','".$config_name."','".$toolchain."','".preg_replace('/.*\/configs\/(.*)_defconfig/',"$1",$kernel_config)."','".$rtsolution."','Pending','')") or die (mysql_error());		
-		system("$perl $work_dir/adduser.pl add -c ".$user_name." ".$project_name." ".$config_name." &");
-		system("$ts $perl $work_dir/build_system.pl $arch $toolchain $kernel_version $kernel_config $rtpatch $home/$user_name/projects/$project_name/$config_name");
-		if(! $f = fopen("$home/$user_name/projects/$project_name/$config_name/build_command",'w'))
+		if(is_dir("$home/$user_name/projects/$project_name/$config_name"))
 		{
-			print 'Can not create the command file';
+			echo "<FONT color=\"red\" size=\"+1\">Une configuration avec un nom pareil existe déjà. Choisissez en un autre.</FONT>";
+		}
+		else
+		{
+			if($rtpatch == '')
+			{
+				$rtpatch = 'none';
+			}
+			
+			//Install the Vanilla Linux (Without any RT patch)
+			if(! is_dir("$home/$user_name/projects/$project_name/vanilla"))
+			{
+				mysql_query("insert into configuration values ('','".$project."','vanilla','".$toolchain."','".preg_replace('/.*\/configs\/(.*)_defconfig/',"$1",$kernel_config)."','".$rtsolution."','Pending','','".$kernel_version."' )") or die (mysql_error());
+				system("$perl $work_dir/adduser.pl add -c ".$user_name." ".$project_name." vanilla &");
+				system("$ts $perl $work_dir/build_system.pl $arch $toolchain $kernel_version $kernel_config none $home/$user_name/projects/$project_name/vanilla");
+				if(! $f = fopen("$home/$user_name/projects/$project_name/vanilla/build_command",'w'))
+				{
+					print 'Can not create the command file';
+					return;
+				}
+				fwrite($f, "$perl $work_dir/build_system.pl $arch $toolchain $kernel_version ". $kernel_config." $rtpatch $home/$user_name/projects/$project_name/vanilla");
+				fclose($f);
+			}
+			
+			mysql_query("insert into configuration values ('','".$project."','".$config_name."','".$toolchain."','".preg_replace('/.*\/configs\/(.*)_defconfig/',"$1",$kernel_config)."','".$rtsolution."','Pending','','".$kernel_version."')") or die (mysql_error());
+			system("$perl $work_dir/adduser.pl add -c ".$user_name." ".$project_name." ".$config_name." &");
+			system("$ts $perl $work_dir/build_system.pl $arch $toolchain $kernel_version $kernel_config $rtpatch $home/$user_name/projects/$project_name/$config_name");
+			if(! $f = fopen("$home/$user_name/projects/$project_name/$config_name/build_command",'w'))
+			{
+				print 'Can not create the command file';
+				return;
+			}
+			fwrite($f, "$perl $work_dir/build_system.pl $arch $toolchain $kernel_version ". $kernel_config." $rtpatch $home/$user_name/projects/$project_name/$config_name");
+			fclose($f);
+			mysql_close() or die (mysql_error());
+			echo '<font size="+1">Votre demande a été transmise</font><BR />';
+			echo '<FONT size="+1">Cliquer <A href="index.php?page=config_project&project='.$project.'">ici</A> pour revenir aux configurations de ce projet</FONT>';
 			return;
 		}
-		fwrite($f, "$perl $work_dir/build_system.pl $arch $toolchain $kernel_version ". $kernel_config." $rtpatch $home/$user_name/projects/$project_name/$config_name");
-		fclose($f);
-		mysql_close() or die (mysql_error());
-		echo '<font size="+1">Votre demande a été transmise</font><BR />';
-		echo '<FONT size="+1">Cliquer <A href="index.php?page=config_project&project='.$project.'">ici</A> pour revenir aux configurations de ce projet</FONT>';
-		return;
 	}
 ?>
 <SCRIPT language="JavaScript">
@@ -171,7 +198,7 @@
 			{
 				$arch_folder='x86';
 			}
-			$config_dir = "$work_dir/arch/$arch/configs";
+			$config_dir = "$work_dir/arch/$arch_folder/configs";
 			if($handle = opendir($config_dir))
 			{
 		?>
@@ -193,7 +220,6 @@
 		<H3>Choix de la solution Linux temps réel</H3>
 		<P align="justify">Séléctionner dans cette liste l'extension temps réel que vous voulez utiliser ou laissez le choix par défaut si vous voulez seulement construire un système Linux minimale pour votre architecture :</P>
 		<SELECT name="cmb_rtsolution" onchange="req_patches();">
-			<OPTION value="none">Aucune</OPTION>
 			<OPTION value="xenomai">Xenomai</OPTION>
 			<OPTION value="rtai">RTAI</OPTION>
 			<OPTION value="preempt-rt">Patch Preempt-RT</OPTION>
