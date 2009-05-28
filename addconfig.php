@@ -57,7 +57,7 @@
 			//Install the Vanilla Linux (Without any RT patch)
 			if(! is_dir("$home/$user_name/projects/$project_name/vanilla"))
 			{
-				mysql_query("insert into configuration values ('','".$project."','vanilla','".$toolchain."','".preg_replace('/.*\/configs\/(.*)/',"$1",$kernel_config)."','".$rtsolution."','Pending','','".$kernel_version."' )") or die (mysql_error());
+				mysql_query("insert into configuration values ('','".$project."','vanilla','".$toolchain."','".preg_replace('/.*\/configs\/(.*)/',"$1",$kernel_config)."','none','Pending','','".$kernel_version."' )") or die (mysql_error());
 				system("$perl $work_dir/adduser.pl add -c ".$user_name." ".$project_name." vanilla &");
 				system("$ts $perl $work_dir/build_system.pl $arch $toolchain $kernel_version $kernel_config none $home/$user_name/projects/$project_name/vanilla");
 				if(! $f = fopen("$home/$user_name/projects/$project_name/vanilla/build_command",'w'))
@@ -65,7 +65,7 @@
 					print 'Can not create the command file';
 					return;
 				}
-				fwrite($f, "$perl $work_dir/build_system.pl $arch $toolchain $kernel_version ". $kernel_config." $rtpatch $home/$user_name/projects/$project_name/vanilla");
+				fwrite($f, "$perl $work_dir/build_system.pl $arch $toolchain $kernel_version ". $kernel_config." none $home/$user_name/projects/$project_name/vanilla");
 				fclose($f);
 			}
 			
