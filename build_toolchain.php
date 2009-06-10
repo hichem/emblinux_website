@@ -40,7 +40,7 @@
 		$_POST['cmb_clib_version'] = '';
 	}
 	
-	$libc_version = $_POST['cmb_'.$_POST['cmb_clib'].'_version'];
+	$libc_version = $_POST['cmb_clib_version'];
      	$config->set_target_options($_POST['cmb_arch'], $_POST['cmb_variant'], $_POST['rd_abi'], $_POST['cmb_endian'], $_POST['cmb_float']);
      	$config->set_toolchain_options($_POST['chk_sysroot'], $_POST['chk_build_shared_lib'], 'unknown');
      	$config->set_os($_POST['cmb_os'], $_POST['cmb_kernel_version']);
@@ -129,11 +129,11 @@
 	
 	////////////////////////////////////////////////////////////////////////
 	// The OS part of the tuple
-	if(($lib == 'glibc')||($lib == 'eglibc'))
+	if(($libc == 'glibc')||($libc == 'eglibc'))
 	{
 		$os = 'gnu';
 	}
-	elseif ($lib == 'uClibc')
+	elseif ($libc == 'uClibc')
 	{
 		$os='uclibc';
 	}
